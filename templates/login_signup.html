@@ -55,20 +55,21 @@ body, html {
 
 <div id="Login"  class="tab-content">
   <h1>Sign in to your Account</h1>
-  	<form method="POST">
-    
-    <label for="email"><b>Name</b></label>
-    <input type="text" placeholder="Enter Email*" name="email" required"">
+  	<form action = "{{url_for('login')}}" method="POST">
     
     <label for="email"><b>Email</b></label>
     <input type="text" placeholder="Enter Email*" name="email" required"">
+    
+    <label for="name"><b>Name</b></label>
+    <input type="text" placeholder="Enter Email*" name="name" required"">
     
 
   	
     <label for="pswd"><b>Password</b></label>
     <input type="password" placeholder="Enter Password*" name="pass" required"">
-  	
-    <button>Sign Up</button>
+    
+    <button type="submit">Sign In</button>
+    <!-- <button>Sign Up</button> -->
     </form>
 
 	
@@ -76,7 +77,7 @@ body, html {
     
 
     <div class="clearfix">
-	<button type="submit">Sign In</button>
+	
 	</div>
 </div>
 
