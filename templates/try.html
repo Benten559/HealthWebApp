@@ -1,16 +1,18 @@
 <html>
   <head>
-    <title>Try Symp</title>
-    <h1> Printing the sympList</h1>
+    <title>Diagnose your symptoms</title>
+    <h1> Select your symptoms below</h1>
   </head>
   <body>
+    {% block results %}
+     <!-- This is where the prognosis goes -->
     <form action="{{url_for('diagnosis')}}" method="POST">
     {%for symp in sympList%}
     <input type="checkbox" name="symps" value={{symp}}>{{symp}}<br>
     {% endfor %}
     <input type="submit">
+    {% endblock results %}
 </form>
-    {% block results %}
-    {% endblock %}
+    
   </body>
 </html>

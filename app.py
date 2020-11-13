@@ -1,4 +1,4 @@
-from flask import Flask, render_template, g, redirect, url_for, request
+from flask import Flask, render_template, session, redirect, url_for, request
 import sqlite3 as sql
 import pandas as pd
 import numpy as np
@@ -10,6 +10,7 @@ symptoms = X.columns
 symptoms = symptoms[:len(symptoms)-2]
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = '78sOME098random987key108475'
 #run_with_ngrok(app)  # Start ngrok when app is run
 # login or signup page
 @app.route("/")
@@ -26,9 +27,16 @@ def signup():
     path = "templates\db2.db"
 
     with sql.connect(path) as con:
+      #check if email is already an entry within Database
       cur = con.cursor()
-      cur.execute("INSERT INTO projects (name,email,password) VALUES (?,?,?)" ,(usr,email,key) )            
-      con.commit()
+      cur.execute("select email from projects where email=?",(email,))
+      check = cur.fetchall()
+      print(check)
+      if check:
+        return render_template('logredirect.html')
+      else:
+        cur.execute("INSERT INTO projects (name,email,password) VALUES (?,?,?)" ,(usr,email,key) )            
+        con.commit()
 
     return render_template('index.html',name = usr,email = email)
 
@@ -46,10 +54,9 @@ def login():
     with sql.connect(path) as con:
       cur = con.cursor()
       cur.execute("select password from projects where email=?",(email,))           
-      # con.commit()
-      # outs = cur.fetchone()
       outs = cur.fetchall()
       if outs[0][0] == key:
+        session["user"] = usr
         return render_template('homeaftersignin.html',name = usr)
       else:
         return 'Password Incorrect'
@@ -57,20 +64,6 @@ def login():
 
     # else:
     #   return render_template('index.html')
-
-
-# Test page to query database 
-# @app.route('/list',methods=['POST','GET'])
-# def list():
-#   path = "templates\db2.db"
-#   con = sql.connect(path)
-#   con.row_factory = sql.Row
-  
-#   cur = con.cursor()
-#   cur.execute("select * from projects")
-   
-#   rows = cur.fetchall()
-#   return render_template("list.html",rows = rows)
 
 # Present the use with all the symptoms
 @app.route("/diagnose")
@@ -90,8 +83,8 @@ def diagnosis():
   model = pickle.load(open('templates/model.pkl','rb'))
   result = model.predict(inputDF)
   print(result)
-  return 'results in terminal output for now'
+  return render_template('prognosis.html',results = result)
 
 
 if __name__ == "__main__":
-  app.run()
+  app.run(debug=True)
