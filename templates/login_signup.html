@@ -54,22 +54,30 @@ body, html {
 
 
 <div id="Login"  class="tab-content">
+  <!-- /* create a block for a failure redirect: */ -->
+{% block head%}
+{% endblock %}
   <h1>Sign in to your Account</h1>
   	<form action = "{{url_for('login')}}" method="POST">
     
     <label for="email"><b>Email</b></label>
-    <input type="text" placeholder="Enter Email*" name="email" required"">
+    <input type="text" placeholder="Enter Email*" name="email"  required>
     
     <label for="name"><b>Name</b></label>
-    <input type="text" placeholder="Enter Email*" name="name" required"">
+    <input type="text" placeholder="Enter Your Name*" name="name" required>
     
 
   	
     <label for="pswd"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password*" name="pass" required"">
+    <input type="password" 
+      oninvalid="this.setCustomValidity('Password does not meet requirements')"
+      onchange="try{setCustomValidity('')}catch(e){}"
+      placeholder="Enter Password*" 
+      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$" 
+      name="pass" 
+      required>
     
     <button type="submit">Sign In</button>
-    <!-- <button>Sign Up</button> -->
     </form>
 
 	
@@ -86,19 +94,25 @@ body, html {
     <form action="{{url_for('signup')}}" method="POST">
 
     <label for="firstname"><b>First Name</b></label>
-    <input type="text" placeholder="First Name*" name="firstname" required"">
+    <input type="text" id="firstname" placeholder="First Name*" name="firstname" required>
 
     <label for="email"><b>Email</b></label>
-    <input type="text" placeholder="Enter Email*" name="mail" required"">
+    <input type="text" id="email" placeholder="Enter Email*" name="mail" required>
   	
     <label for="pswd"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password*" name="pass" required"">
+    <input type="password" 
+      id="pass"
+      placeholder="Enter Password*"
+      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$" 
+      oninvalid="this.setCustomValidity('The password entered does not meet minimum requirements')"
+      onchange="try{setCustomValidity('')}catch(e){}" 
+      name="pass" required>
     
   	<p>By creating an account you agree to our <a href="#" style="color:blue">Terms & Privacy</a>.</p>
   	
 
     <div class="clearfix">
-    <button type="button" class="cancelbtn">Cancel</button>
+    <button type="button" class="cancelbtn" onclick="clearFields()" >Cancel</button>
     <button type="submit" class="signupbtn">Create Account</button>
     </div>
     </form>
@@ -122,6 +136,12 @@ function openPage(pageName,elmnt,color) {
 
 // always open with default
 document.getElementById("default").click();
+//cancel button
+function clearFields(){
+  document.getElementById("firstname").value = "";
+  document.getElementById("email").value = "";
+  document.getElementById("pass").value = "";
+}
 </script>
    
 </body>
