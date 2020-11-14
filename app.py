@@ -4,15 +4,21 @@ import pandas as pd
 import numpy as np
 import pickle
 from sklearn.tree import DecisionTreeClassifier
-#from flask_ngrok import run_with_ngrok
-X = pd.read_csv('datasets/training_data.csv')
-symptoms = X.columns
-symptoms = symptoms[:len(symptoms)-2]
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '78sOME098random987key108475'
-#run_with_ngrok(app)  # Start ngrok when app is run
-# login or signup page
+app.config['SECRET_KEY'] = '78sOME098random987key10847'
+def loadSymps():
+  X = pd.read_csv('datasets/training_data.csv')
+  symptoms = X.columns
+  symptoms = symptoms[:len(symptoms)-2]
+  return symptoms
+
+# function called on load, removes previous session data:
+@app.before_first_request
+def clearSesh():
+  session.clear()
+
+# login or signup page, this is the root page
 @app.route("/")
 def index():
   return render_template('login_signup.html',methods=['POST'] )
@@ -30,14 +36,14 @@ def signup():
       #check if email is already an entry within Database
       cur = con.cursor()
       cur.execute("select email from projects where email=?",(email,))
-      check = cur.fetchall()
-      print(check)
-      if check:
-        return render_template('logredirect.html')
+      emailCheck = cur.fetchall()
+      # email already exists, send back to root with message
+      if emailCheck:
+        return render_template('logredirect.html',error = 1)
       else:
         cur.execute("INSERT INTO projects (name,email,password) VALUES (?,?,?)" ,(usr,email,key) )            
         con.commit()
-
+    # send user to login after signing up
     return render_template('index.html',name = usr,email = email)
 
   else:
@@ -45,36 +51,46 @@ def signup():
 
 @app.route("/log",methods=['POST'])
 def login():
+  #this grabs user input within form
   if request.method == "POST":
     usr = request.form["name"]
     email = request.form["email"]
     key = request.form["pass"]
     path = "templates\db2.db"
-
+    #open database connection
     with sql.connect(path) as con:
       cur = con.cursor()
       cur.execute("select password from projects where email=?",(email,))           
       outs = cur.fetchall()
+      # if password matches, store user info during runtime
       if outs[0][0] == key:
         session["user"] = usr
         return render_template('homeaftersignin.html',name = usr)
+      # password fail case
       else:
-        return 'Password Incorrect'
-    #   return render_template('index.html',name = usr,email = email)
+        return render_template('logredirect.html',error = 2)
 
-    # else:
-    #   return render_template('index.html')
-
-# Present the use with all the symptoms
+# Present the user with all the symptoms
 @app.route("/diagnose")
 def diagnose():
-    return render_template('try.html',sympList=symptoms)
+  # check log in status, sends to main login page upon failure
+  if "user" in session:
+    pass
+  else:#failure case
+    return render_template('logredirect.html',error = 3) 
+  symptoms = loadSymps()
+  return render_template('try.html',sympList=symptoms)
 
 # The DTM computes based on user input
 @app.route("/diagnosis", methods=['POST','GET'])
 def diagnosis():
+  # check log in status, sends to main login page upon failure
+  if "user" in session:
+    pass
+  else: #failure case
+    return render_template('logredirect.html',error = 3)
+  symptoms = loadSymps()
   userSymps = request.form.getlist('symps')
-  # initialize empty DF
   inputDF = pd.DataFrame(0,index = np.arange(1),columns = symptoms)
   # mark user selections as 1
   for symp in userSymps:
@@ -82,9 +98,7 @@ def diagnosis():
 
   model = pickle.load(open('templates/model.pkl','rb'))
   result = model.predict(inputDF)
-  print(result)
   return render_template('prognosis.html',results = result)
-
 
 if __name__ == "__main__":
   app.run(debug=True)
