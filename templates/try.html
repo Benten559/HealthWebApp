@@ -1,9 +1,9 @@
 <html>
   <head>
-    <title>Diagnose Your Symptoms</title>
-	<link rel="stylesheet" type="text/css" href="try_style.css">
-  </head>
-<style>
+    <title>Diagnose your symptoms</title>
+    <h1> Select your symptoms below</h1>
+    <!-- <link type="text/css" rel="stylesheet" href="{{url_for('static',filename = 'style/signup.css')}}"> -->
+    <link href="{{url_for('static',filename = 'styles/signup.css')}}" rel="stylesheet" type="text/css"><style>
 	hr {
     border-left: 1px solid #f1f1f1;
     border-right: 1px solid #f1f1f1;
@@ -12,22 +12,18 @@
     margin-bottom: 20px;
     margin-right: 43px;}
 </style>
-<body style="background-color: azure;">
-<h1 style="color:darkgreen;">Select your Symptoms Below</h1>
-<hr/>
-  <body>
-  <div id=container>
+  </head>
+  <body >
     {% block results %}
-		<!-- This is where the prognosis goes -->
-		<form class="symptom_list" action="{{url_for('diagnosis')}}" method="POST">
-			<div id="symptom">
-			{%for symp in sympList%}
-			<input type="checkbox" name="symps" value={{symp}}>{{symp}}<br>
-			{% endfor %}
-			</div>
-		<input type="submit">
-	{% endblock results %}
-		</form>
-   </div> 
+     <!-- This is where the prognosis goes -->
+    <form action="{{url_for('diagnosis')}}" method="POST">
+    {%for symp in sympList%}
+    <input type="checkbox" name="symps" value={{symp}}>{{symp}}<br>
+    {% endfor %}
+    <input type="submit" value="Classify Symptoms" id="sub">
+    {% endblock results %}
+</form>
+
+
   </body>
 </html>

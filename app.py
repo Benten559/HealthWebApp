@@ -4,9 +4,15 @@ import pandas as pd
 import numpy as np
 import pickle
 from sklearn.tree import DecisionTreeClassifier
+from werkzeug.utils import secure_filename
 
-app = Flask(__name__)
+app = Flask(__name__,static_folder='static/')
 app.config['SECRET_KEY'] = '78sOME098random987key10847'
+# def checkFile():
+#   path = "G:\Shared drives\CS150Project\CSCI150 files\model data"
+
+
+
 def loadSymps():
   X = pd.read_csv('datasets/training_data.csv')
   symptoms = X.columns
@@ -99,6 +105,31 @@ def diagnosis():
   model = pickle.load(open('templates/model.pkl','rb'))
   result = model.predict(inputDF)
   return render_template('prognosis.html',results = result)
+
+@app.route("/upload", methods=['POST','GET'])
+def mlInput():
+# check log in status, sends to main login page upon failure
+  if "user" in session:
+    pass
+  else:#failure case
+    return render_template('logredirect.html',error = 3)
+  # If logged in, allow user to input image
+  return render_template('mlView.html')
+
+@app.route("/identify",methods=['POST','GET'])
+def identify():
+  if "user" in session:
+    pass
+  else:#failure case
+    return render_template('logredirect.html',error = 3)
+  uploadedFile = request.files['file']
+  print(uploadedFile.filename)
+  print(uploadedFile)
+  # filename = secure_filename(uploadedFile)
+  # print(filename)
+  return 'check terminal'
+  # return 'made to'
+
 
 if __name__ == "__main__":
   app.run(debug=True)
