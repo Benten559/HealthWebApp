@@ -3,7 +3,15 @@
     <title>Diagnose your symptoms</title>
     <h1> Select your symptoms below</h1>
     <!-- <link type="text/css" rel="stylesheet" href="{{url_for('static',filename = 'style/signup.css')}}"> -->
-    <link href="{{url_for('static',filename = 'styles/signup.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{url_for('static',filename = 'styles/signup.css')}}" rel="stylesheet" type="text/css"><style>
+	hr {
+    border-left: 1px solid #f1f1f1;
+    border-right: 1px solid #f1f1f1;
+    border-bottom: 5px solid #50A559;
+    border-top: 1px solid #f1f1f1;
+    margin-bottom: 20px;
+    margin-right: 43px;}
+</style>
   </head>
   <body >
     {% block results %}
@@ -15,6 +23,7 @@
     <input type="submit" value="Classify Symptoms" id="sub">
     {% endblock results %}
 </form>
-    
+
+
   </body>
 </html>
