@@ -1,3 +1,23 @@
+input[type=checkbox] {
+  position: relative;
+  cursor: pointer;
+  background: #990000;  
+}
+body {
+  background-color: lightblue;
+}
+/* input[type=checkbox]:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 0;
+  left: 0;
+  background-color:#e9e9e9;
+} */
+
+/* 
 <!doctype html>
 <html>
 <head>
@@ -35,4 +55,4 @@
   </div>
 </form>
 </body>
-</html>
+</html> */
