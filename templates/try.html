@@ -1,4 +1,7 @@
 <html>
+  {% macro increment(dct, key, inc=1)%}
+    {% if dct.update({key: dct[key] + inc}) %} {% endif %}
+{% endmacro %}
   <head>
     <title>Diagnose your symptoms</title>
     <h1> Select your symptoms below</h1>
@@ -16,10 +19,16 @@
   </head>
   <body >
     {% block results %}
+    <!-- {% set num = {'total':0} %} -->
      <!-- This is where the prognosis goes -->
     <form action="{{url_for('diagnosis')}}" method="POST">
     {%for symp in sympList%}
-    <input type="checkbox" name="symps" value={{symp}}>{{symp}}<br>
+    <!-- {{increment(num,'total')}} -->
+    <!-- {%if num.total is divisibleby(5)%} -->
+     <!-- {{"<br>"}} -->
+    <!-- {%endif%} -->
+    <input type="checkbox" name="symps" value={{symp}}>{{symp}} <br>
+    <!-- {{num.total}} -->
     {% endfor %}
     <input type="submit" value="Classify Symptoms" id="sub">
     {% endblock results %}
