@@ -3,8 +3,28 @@ import sqlite3 as sql
 import pandas as pd
 import numpy as np
 import pickle
+import glob
+import os
 from sklearn.tree import DecisionTreeClassifier
 from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename
+# for classifier
+import torch, torchvision
+# from PIL import Image
+from torchvision import transforms
+from PIL import Image
+
+img_trans = transforms.Compose([transforms.Resize((128, 128)),
+                                 transforms.CenterCrop(100),
+#                                 transforms.ToTensor(),
+])
+app = Flask(__name__,static_folder='static/')
+app.config['SECRET_KEY'] = '78sOME098random987key10847'
+# def checkFile():
+#   path = "G:\Shared drives\CS150Project\CSCI150 files\model data"
+
+
+
 
 app = Flask(__name__,static_folder='static/')
 app.config['SECRET_KEY'] = '78sOME098random987key10847'
@@ -122,13 +142,63 @@ def identify():
     pass
   else:#failure case
     return render_template('logredirect.html',error = 3)
+
   uploadedFile = request.files['file']
-  print(uploadedFile.filename)
-  print(uploadedFile)
-  # filename = secure_filename(uploadedFile)
-  # print(filename)
-  return 'check terminal'
-  # return 'made to'
+  model = torch.load('templates/mod.pt')
+  uploadedFile.save(secure_filename(uploadedFile.filename))
+  testimg = Image.open(secure_filename(uploadedFile.filename)).convert('RGB')
+  img_to_tensor = transforms.ToTensor() 
+
+  testimg = img_to_tensor(testimg)
+  output_batch = torch.stack([testimg])
+  output_img = output_batch[0].unsqueeze(0)
+  test_output = model(output_img)
+  test_sim = test_output[0]
+
+  # search/compare
+  path = r"Machine learning model\datasets\CSCI150 files\model data"
+  resultmain = 0
+  maxi= float(0) 
+  for i in range (0, 1153):
+    feat_model = torch.load(path+"\\feats" + str(i) + ".pt") 
+    result = torch.nn.functional.cosine_similarity(feat_model, test_sim, dim=0)
+#     print (result.item())
+    if(result.item() >= maxi):
+      maxi = result.item()
+      print(maxi)
+      resultmain = i
+      
+  # CHECK THE FEATURE VECTORS
+  root_dir = r"cropped"
+
+  k = 0
+  dataset = pd.read_csv("templates/table.csv")
+  for filename in glob.iglob(root_dir + '**/*.jpg', recursive=True):
+
+    if(k==resultmain):
+        basename = os.path.basename(filename)
+        
+        if maxi < 0.55:
+            print("pill not found in dataset", "accurancy too low: ", maxi*100)
+        else:
+            if maxi < 0.085:
+                print (dataset[dataset.rxnavImageFileName == basename].name, "accurancy ", maxi*100)
+            else:
+
+                print (dataset[dataset.rxnavImageFileName == basename].name)
+        predicted = dataset[dataset.rxnavImageFileName == basename].name
+                
+        
+        # im = Image.open(filename)
+        # display(im)
+        print(filename)
+    k += 1
+
+  # shape check
+  # print(test_sim.shape)
+
+  return render_template('mlOut.html',output = predicted)
+
 
 
 if __name__ == "__main__":
