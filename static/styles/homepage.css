@@ -1,0 +1,60 @@
+@charset "utf-8";
+body{
+	width: 90%;
+	margin-left:auto;
+	margin-right: auto;
+}
+
+#container{
+	display: grid;
+	grid-auto-rows:minmax(250px, auto);
+	grid-gap: 20px;
+	max-width: 1000px;
+	margin: 0 auto;
+}
+
+#smallContainer{
+	float-left;
+	display:block;
+}
+
+#linkFinder{
+	border-radius: 25px;
+	border: 2px solid #73AD21;
+	padding: 20px;
+	width: 200px;
+	height: 150px; 
+	text-align: center;
+	display:block;
+	display:block-inline;
+	text-decoration:none;
+}
+
+#linkMedicine{
+  border-radius: 25px;
+  border: 2px solid #73AD21;
+  padding: 20px;
+  width: 200px;
+  height: 150px;  
+  text-align: center;
+  display:block;
+  display:block-inline;
+  text-decoration:none;
+}
+
+#linkSymptom{
+  border-radius: 25px;
+  border: 2px solid #73AD21;
+  padding: 20px;
+  width: 200px;
+  height: 150px;  
+  width: 400;
+  text-align: center;
+  display:block;
+  display: block-inline;
+  text-decoration:none;
+}
+
+#help{
+	text-align: center;
+}

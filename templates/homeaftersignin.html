@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <title>Wellness Support Center</title>
 <link rel="stylesheet" type="text/css" href="homepage.css">
+<link href="{{url_for('static',filename = 'styles/homepage.css')}}" rel="stylesheet" type="text/css">
 </head>
 <body style="background-color: azure;">
 <h1 style="color:darkgreen;">Wellness Support Center</h1>
@@ -16,23 +17,26 @@
 		</div>
 		<div id= "container">
 		<ul>
-			<a href = "url" id="linkFinder">
-			<img src="hospital_finder.png" width"100" height="100" alt="Hospital Finder">
-			<br/> <p>Find Hospitals</p>
-			</a>
+			<div id="link1">
+			<img src="/styles/img/hospital_finder.png" width="100" height="100" alt="Hospital Finder">
+			<br/><a href="url">Find Hospitals</a>
+			</div>
 		
-			<a href = "{url_for('mlInput')}" id="linkMedicine">
-			<img src="verify_medicine.png" width"100" height="100" alt="Verify Medicine">
-			<br/> <p>Verify a medicine</p>
-			</a>
+			<div id="link2">
+			<img src="/styles/img/verify_medicine.png" width="100" height="100" alt="Verify Medicine">
+			<br/><a href="{{url_for('mlInput')}}">Verify a medicine</a>
+			</div>
 		
-			<a href = "{url_for('diagnose')}" id="linkSymptom">
-			<img src="symptom_checker.png" width"100" height="100" alt="Sympton Checker">
-			<br/> <p>Check for symptoms</p>
-			</a>
+			<div id="link3">
+			<img src="/styles/img/symptom_checker.png" width="100" height="100" alt="Sympton Checker">
+			<br/><a href="{{url_for('diagnose')}}">Check for symptoms</a>
+			</div>
 		</ul>
 	</div>
-	<div>
-</div>
+	<!-- <div>
+		<ul><a href="url">Find Hospitals</a></ul>
+		<ul><a href="{{url_for('mlInput')}}">Verify a medicine</a></ul>
+		<ul><a href="{{url_for('diagnose')}}">Check for symptoms</a></ul>
+</div> -->
 </body>
 </html>
