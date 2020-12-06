@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styleloginsingup.css">
+    <link href="{{url_for('static',filename = 'styles/styleloginsignup.css')}}" rel="stylesheet" type="text/css">
     <title>Document</title>
     <script>
         function openPage(pageName, elmnt, color) {
@@ -23,6 +23,12 @@
 
         // always open with default
         document.getElementById("default").click();
+        //cancel button
+        function clearFields() {
+            document.getElementById("firstname").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("pass").value = "";
+        }
     </script>
     <!-- 
     <p class="p1"> WELLNESS SUPPORT CENTER</p> -->
@@ -42,7 +48,9 @@
 
 
         <div id="Login" class="tab-content">
-            <form method="POST">
+            <!-- /* create a block for a failure redirect: */ -->
+            {% block head%} {% endblock %}
+            <form action="{{url_for('login')}}" method="POST">
 
 
                 <label for="email"><b>Username</b></label>
@@ -51,13 +59,15 @@
 
 
                 <label for="pswd"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password*" name="pass" required "">
+                <input type="password" oninvalid="this.setCustomValidity('Password does not meet requirements')" onchange="try{setCustomValidity('')}catch(e){}" placeholder="Enter Password*" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$" name="pass"
+                    required>
+                <button type="submit">Sign In</button>
             </form>
 
             <a id="forgot-password" href="#" style="color:red">Forgot password?</a>
 
             <div class="clearfix">
-                <button type="submit">Sign In</button>
+                <!-- <button type="submit">Sign In</button> -->
             </div>
         </div>
 
@@ -74,7 +84,8 @@
 
 
                 <label for="pswd"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password*" name="pass" required "">
+                <input type="password" id="pass" placeholder="Enter Password*" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$" oninvalid="this.setCustomValidity('The password entered does not meet minimum requirements')" onchange="try{setCustomValidity('')}catch(e){}"
+                    name="pass" required>
 
                 <p>By creating an account you agree to our <a href="#" style="color:red">Terms & Privacy</a>.</p>
 

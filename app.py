@@ -47,7 +47,7 @@ def clearSesh():
 # login or signup page, this is the root page
 @app.route("/")
 def index():
-  return render_template('login_signup.html',methods=['POST'] )
+  return render_template('login_signupmain.html',methods=['POST'] )
 
 # record a new user signup
 @app.route("/index" , methods=['POST','GET'])
@@ -79,7 +79,7 @@ def signup():
 def login():
   #this grabs user input within form
   if request.method == "POST":
-    usr = request.form["name"]
+    # usr = request.form["name"]
     email = request.form["email"]
     key = request.form["pass"]
     path = "templates\db2.db"
@@ -90,11 +90,45 @@ def login():
       outs = cur.fetchall()
       # if password matches, store user info during runtime
       if outs[0][0] == key:
-        session["user"] = usr
-        return render_template('homeaftersignin.html',name = usr)
+        session["user"] = email
+        return render_template('aftersignin.html',name = email)
       # password fail case
       else:
         return render_template('logredirect.html',error = 2)
+
+
+@app.route("/Aboutus")
+def about_us():
+  # check log in status, sends to main login page upon failure
+  if "user" in session:
+    pass
+  else:#failure case
+    return render_template('logredirect.html',error = 3) 
+  return render_template('aboutus.html')
+@app.route("/contact")
+def contact_us():
+  # check log in status, sends to main login page upon failure
+  if "user" in session:
+    pass
+  else:#failure case
+    return render_template('logredirect.html',error = 3) 
+  return render_template('contact.html')
+@app.route("/Account")
+def account():
+  # check log in status, sends to main login page upon failure
+  if "user" in session:
+    pass
+  else:#failure case
+    return render_template('logredirect.html',error = 3) 
+  return render_template('account.html')
+@app.route("/home")
+def home():
+  # check log in status, sends to main login page upon failure
+  if "user" in session:
+    pass
+  else:#failure case
+    return render_template('logredirect.html',error = 3) 
+  return render_template('aftersignin.html')
 
 # Present the user with all the symptoms
 @app.route("/diagnose")
