@@ -84,7 +84,7 @@
     let currentInfoWindow;
     let service;
     let infoPane;
-	
+
 	function initAutocomplete() {
   const map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 36.7378, lng: -119.7871 },
@@ -169,6 +169,7 @@
           bounds.extend(pos);
 
           infoWindow.setPosition(pos);
+
           infoWindow.setContent('Your are here.');
           infoWindow.open(map);
           map.setCenter(pos);
@@ -211,7 +212,9 @@
       let request = {
         location: position,
         rankBy: google.maps.places.RankBy.DISTANCE,
-        keyword: ['health','hospitals','heart']
+
+      keyword: ['health','hospitals','heart']
+
       };
 
       service = new google.maps.places.PlacesService(map);
@@ -239,6 +242,7 @@
         google.maps.event.addListener(marker, 'click', () => {
           let request = {
             placeId: place.place_id,
+
             fields: ['name', 'formatted_address','formatted_phone_number', 'geometry', 'rating',
               'website', 'photos']
           };
@@ -322,6 +326,7 @@
       infoPane.appendChild(phone_number);
 	  
 	  
+
       if (placeResult.website) {
         let websitePara = document.createElement('p');
         let websiteLink = document.createElement('a');
