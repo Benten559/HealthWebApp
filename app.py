@@ -18,6 +18,13 @@ img_trans = transforms.Compose([transforms.Resize((128, 128)),
                                  transforms.CenterCrop(100),
 #                                 transforms.ToTensor(),
 ])
+app = Flask(__name__,static_folder='static/')
+app.config['SECRET_KEY'] = '78sOME098random987key10847'
+# def checkFile():
+#   path = "G:\Shared drives\CS150Project\CSCI150 files\model data"
+
+
+
 
 app = Flask(__name__,static_folder='static/')
 app.config['SECRET_KEY'] = '78sOME098random987key10847'
@@ -194,7 +201,7 @@ def identify():
   test_sim = test_output[0]
 
   # search/compare
-  path = r"C:\Users\mistr\Downloads\image-20201010T200227Z-004\image\images\gallery\model data"
+  path = r"Machine learning model\datasets\CSCI150 files\model data"
   resultmain = 0
   maxi= float(0) 
   for i in range (0, 1153):
@@ -207,7 +214,7 @@ def identify():
       resultmain = i
       
   # CHECK THE FEATURE VECTORS
-  root_dir = r"C:\Users\mistr\Downloads\image-20201010T200227Z-004\image\images\gallery\cropped"
+  root_dir = r"cropped"
 
   k = 0
   dataset = pd.read_csv("templates/table.csv")
