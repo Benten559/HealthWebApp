@@ -14,7 +14,7 @@
             <img src="static/styles/img/logoproject.png" alt=logo class="logo">
             <nav>
                 <ul>
-                    <li><a href="{{url_for('login')}}">Home</a></li>
+                    <li><a href="{{url_for('home')}}">Home</a></li>
                     <li><a href="{{url_for('about_us')}}">About</a></li>
                     <li><a href="{{url_for('contact_us')}}">Contact Us</a></li>
                     <li><a href="{{url_for('account')}}">Account</a></li>
@@ -45,7 +45,7 @@
             </li>
             <li class="li1">
                 <img src="static/styles/img/hospital_finder.png" width="100" height="100" alt="Hospital Finder">
-                <br/><a href="url">Find Hospitals</a>
+                <br/><a href="{{url_for('nearby')}}">Find Hospitals</a>
             </li>
     </div>
 </body>
