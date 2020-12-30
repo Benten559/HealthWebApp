@@ -18,6 +18,13 @@ img_trans = transforms.Compose([transforms.Resize((128, 128)),
                                  transforms.CenterCrop(100),
 #                                 transforms.ToTensor(),
 ])
+app = Flask(__name__,static_folder='static/')
+app.config['SECRET_KEY'] = '78sOME098random987key10847'
+# def checkFile():
+#   path = "G:\Shared drives\CS150Project\CSCI150 files\model data"
+
+
+
 
 app = Flask(__name__,static_folder='static/')
 app.config['SECRET_KEY'] = '78sOME098random987key10847'
@@ -40,7 +47,7 @@ def clearSesh():
 # login or signup page, this is the root page
 @app.route("/")
 def index():
-  return render_template('login_signup.html',methods=['POST'] )
+  return render_template('login_signupmain.html',methods=['POST'] )
 
 # record a new user signup
 @app.route("/index" , methods=['POST','GET'])
@@ -72,7 +79,7 @@ def signup():
 def login():
   #this grabs user input within form
   if request.method == "POST":
-    usr = request.form["name"]
+    # usr = request.form["name"]
     email = request.form["email"]
     key = request.form["pass"]
     path = "templates\db2.db"
@@ -83,12 +90,54 @@ def login():
       outs = cur.fetchall()
       # if password matches, store user info during runtime
       if outs[0][0] == key:
-        session["user"] = usr
-        return render_template('homeaftersignin.html',name = usr)
+        session["user"] = email
+        return render_template('aftersignin.html',name = email)
       # password fail case
       else:
         return render_template('logredirect.html',error = 2)
 
+
+@app.route("/Aboutus")
+def about_us():
+  # check log in status, sends to main login page upon failure
+  if "user" in session:
+    pass
+  else:#failure case
+    return render_template('logredirect.html',error = 3) 
+  return render_template('aboutus.html')
+@app.route("/contact")
+def contact_us():
+  # check log in status, sends to main login page upon failure
+  if "user" in session:
+    pass
+  else:#failure case
+    return render_template('logredirect.html',error = 3) 
+  return render_template('contact.html')
+@app.route("/Account")
+def account():
+  # check log in status, sends to main login page upon failure
+  if "user" in session:
+    pass
+  else:#failure case
+    return render_template('logredirect.html',error = 3) 
+  return render_template('account.html')
+@app.route("/home")
+def home():
+  # check log in status, sends to main login page upon failure
+  if "user" in session:
+    pass
+  else:#failure case
+    return render_template('logredirect.html',error = 3) 
+  return render_template('aftersignin.html')
+
+@app.route("/nearby")
+def nearby():
+  # check log in status, sends to main login page upon failure
+  if "user" in session:
+    pass
+  else:#failure case
+    return render_template('logredirect.html',error = 3) 
+  return render_template('gmap.html')
 # Present the user with all the symptoms
 @app.route("/diagnose")
 def diagnose():
@@ -98,6 +147,7 @@ def diagnose():
   else:#failure case
     return render_template('logredirect.html',error = 3) 
   symptoms = loadSymps()
+  symptoms = sorted(symptoms)
   return render_template('try.html',sympList=symptoms)
 
 # The DTM computes based on user input
@@ -108,8 +158,10 @@ def diagnosis():
     pass
   else: #failure case
     return render_template('logredirect.html',error = 3)
+  
   symptoms = loadSymps()
   userSymps = request.form.getlist('symps')
+  print(userSymps)
   inputDF = pd.DataFrame(0,index = np.arange(1),columns = symptoms)
   # mark user selections as 1
   for symp in userSymps:
@@ -117,7 +169,7 @@ def diagnosis():
 
   model = pickle.load(open('templates/model.pkl','rb'))
   result = model.predict(inputDF)
-  return render_template('prognosis.html',results = result)
+  return render_template('prognosis.html',results = result, symps = sorted(userSymps))
 
 @app.route("/upload", methods=['POST','GET'])
 def mlInput():
@@ -149,7 +201,7 @@ def identify():
   test_sim = test_output[0]
 
   # search/compare
-  path = r"Machine learning model\datasets\feats\CSCI150 files\model data"
+  path = r"Machine learning model\datasets\CSCI150 files\model data"
   resultmain = 0
   maxi= float(0) 
   for i in range (0, 1153):
@@ -162,34 +214,22 @@ def identify():
       resultmain = i
       
   # CHECK THE FEATURE VECTORS
-  root_dir = r"Machine learning model\datasets\cropped"
+  root_dir = r"cropped"
 
   k = 0
   dataset = pd.read_csv("templates/table.csv")
+  predicted = "Hello"
   for filename in glob.iglob(root_dir + '**/*.jpg', recursive=True):
-
     if(k==resultmain):
-        basename = os.path.basename(filename)
-        
-        if maxi < 0.55:
-            print("pill not found in dataset", "accurancy too low: ", maxi*100)
+      basename = os.path.basename(filename)
+      if maxi < 0.45:
+        predicted = "pill not found in dataset accurancy too low. potential match:  " + str(dataset[dataset.rxnavImageFileName == basename].name)
+      else:
+        if maxi < 0.085:
+          predicted = str (dataset[dataset.rxnavImageFileName == basename].name)+ "accurancy " + str(maxi*100)
         else:
-            if maxi < 0.085:
-                print (dataset[dataset.rxnavImageFileName == basename].name, "accurancy ", maxi*100)
-            else:
-
-                print (dataset[dataset.rxnavImageFileName == basename].name)
-        predicted = dataset[dataset.rxnavImageFileName == basename].name
-                
-        
-        # im = Image.open(filename)
-        # display(im)
-        print(filename)
+          predicted = str(dataset[dataset.rxnavImageFileName == basename].name)
     k += 1
-
-  # shape check
-  # print(test_sim.shape)
-
   return render_template('mlOut.html',output = predicted)
 
 

@@ -6,6 +6,75 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
+        .container1 {
+            width: 100%;
+            height: auto;
+            margin: 0;
+            margin-right: 50px;
+        }
+        
+        header {
+            background-color: rgb(212, 208, 208);
+        }
+        
+        h1 {
+            font-family: 'proxima-nova', sans-serif;
+            text-align: center;
+            color: black;
+            margin-left: 10px;
+        }
+        
+        button {}
+        
+        .logo {
+            float: left;
+            width: 12%;
+            height: 10%;
+            ;
+        }
+        
+        header::after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+        
+        nav {
+            float: right;
+        }
+        
+        nav ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        nav li {
+            display: inline-block;
+            margin-left: 150px;
+            padding-top: 23px;
+            padding-right: 23px;
+        }
+        
+        nav a {
+            color: rgb(22, 23, 85);
+            font-family: Arial, Helvetica, fantasy;
+            text-decoration: green;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        
+        nav a:hover {
+            color: red;
+        }
+        
+        body {
+            background-image: url("https://www.ranchiwomenscollege.org/wpimages/wp08feb7ab_05_06.jpg");
+            background-size: cover;
+            color: rgb(170, 165, 165);
+            align-items: center;
+            justify-content: center;
+        }
         /* Always set the map height explicitly to define the size of the div
      * element that contains the map. */
         
@@ -68,6 +137,21 @@
 <body>
     <!-- TODO: Step 4A2: Add a generic sidebar -->
     <!-- The slide-out panel for showing place details -->
+    <header>
+        <div class="container1">
+
+            <img src="static/styles/img/logoproject.png" alt=l ogo class="logo">
+            <nav>
+                <ul>
+                    <li><a href="{{url_for('home')}}">Home</a></li>
+                    <li><a href="{{url_for('about_us')}}">About</a></li>
+                    <li><a href="{{url_for('contact_us')}}">Contact Us</a></li>
+                    <li><a href="{{url_for('account')}}">Account</a></li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
     <div id="panel"></div>
 
     <!-- Map appears here -->
