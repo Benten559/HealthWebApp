@@ -7,6 +7,7 @@
 
 /* Change body */
 body, html {
+  /* background-image: url('templates\bkg.png') ; */
   background-color:slategray;
   padding: 40px;
   max-width:600px;
@@ -47,8 +48,14 @@ body, html {
 
 </style>
 </head>
-<body>
 
+<body>
+<h1 style="color:darkgreen;">Wellness Support Center</h1>
+	<hr>
+	<div><img src="WSC_home.jpg" width="1080
+	" height="350" alt="Wellness Support Center">
+	</div>
+<div id=container>
 <button class="tab-link" onclick="openPage('Login', this, 'deepskyblue')" id="default">Login</button>
 <button class="tab-link" onclick="openPage('SignUp', this, 'mediumseagreen')">Sign Up</button>
 
@@ -117,9 +124,11 @@ body, html {
     </div>
     </form>
 </div>
+</div>
 
 
 <script>
+  // document.body.style.backgroundImage = "templates\bkg.png";
 function openPage(pageName,elmnt,color) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tab-content");

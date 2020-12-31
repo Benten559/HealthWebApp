@@ -1,29 +1,275 @@
 <html>
-  <head>
+{% macro increment(dct, key, inc=1)%} {% if dct.update({key: dct[key] + inc}) %} {% endif %} {% endmacro %}
+
+<head>
     <title>Diagnose your symptoms</title>
-    <h1> Select your symptoms below</h1>
+    <!-- <h1> Select your symptoms below</h1> -->
     <!-- <link type="text/css" rel="stylesheet" href="{{url_for('static',filename = 'style/signup.css')}}"> -->
-    <link href="{{url_for('static',filename = 'styles/signup.css')}}" rel="stylesheet" type="text/css"><style>
-	hr {
-    border-left: 1px solid #f1f1f1;
-    border-right: 1px solid #f1f1f1;
-    border-bottom: 5px solid #50A559;
-    border-top: 1px solid #f1f1f1;
-    margin-bottom: 20px;
-    margin-right: 43px;}
-</style>
-  </head>
-  <body >
+    <link href="{{url_for('static',filename = 'styles/signup.css')}}" rel="stylesheet" type="text/css">
+    <style>
+    body,
+        html {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container1 {
+            width: 100%;
+            height: auto;
+            margin: 0;
+            margin-right: 50px;
+        }
+        
+        header {
+            background-color: rgb(212, 208, 208);
+        }
+        
+        h1 {
+            font-family: 'proxima-nova', sans-serif;
+            text-align: center;
+            color: black;
+            margin-left: 10px;
+        }
+        
+        button {}
+        
+        .logo {
+            float: left;
+            width: 12%;
+            height: 10%;
+            ;
+        }
+        
+        header::after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+        
+        nav {
+            float: right;
+        }
+        
+        nav ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        nav li {
+            display: inline-block;
+            margin-left: 150px;
+            padding-top: 23px;
+            padding-right: 23px;
+        }
+        
+        nav a {
+            color: rgb(22, 23, 85);
+            font-family: Arial, Helvetica, fantasy;
+            text-decoration: green;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        
+        nav a:hover {
+            color: red;
+        }
+        
+        body {
+            background-image: url("https://www.ranchiwomenscollege.org/wpimages/wp08feb7ab_05_06.jpg");
+            background-size: cover;
+            color: rgb(170, 165, 165);
+            /* align-items: center;
+            justify-content: center; */
+        }
+        
+        hr {
+            border-left: 1px solid #f1f1f1;
+            border-right: 1px solid #f1f1f1;
+            border-bottom: 5px solid #50A559;
+            border-top: 1px solid #f1f1f1;
+            margin-bottom: 20px;
+            margin-right: 43px;
+        }
+        
+        p {
+            font-family: 'proxima-nova', sans-serif;
+            text-align: center;
+            color: black;
+            margin-left: 10px;
+            font-size: 30px;
+        }
+    }
+    /* .container {
+            max-width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 13px;
+            display: table;
+            text-align: center;
+            margin-left: 100px;
+            margin-right: 100px;
+            margin-top: 100px;
+        }
+        
+        ul.horizontal {
+            min-width: 696px;
+            list-style: none;
+            padding-top: 20px;
+        }
+        
+        ul.horizontal li {
+            display: inline;
+            margin-right: 10px;
+        } */
+    .container {
+        width: 100px;
+        height: 100%;
+        margin-left: 250px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 13px;
+        position: center;
+        max-height: 100%;
+        overflow-y: auto;
+    }
+    ul.ks-cboxtags {
+        postion: center;
+        list-style: none;
+        list-style: none;
+        margin: 0;
+        text-indent: 10px;
+    }
+    ul.ks-cboxtags li {
+        display: inline-block;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+    }
+    ul.ks-cboxtags li label {
+        display: inline-block;
+        background-color: rgba(218, 218, 218, 0.9);
+        border: 2px solid rgba(139, 139, 139, .3);
+        color: #000000;
+        font-weight: bold;
+        border-radius: 25px;
+        white-space: nowrap;
+        margin: 3px 0px;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        transition: all .2s;
+    }
+    ul.ks-cboxtags li label {
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+    ul.ks-cboxtags li label::before {
+        display: inline-block;
+        font-style: normal;
+        font-variant: normal;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        font-size: 12px;
+        padding: 2px 6px 2px 2px;
+        transition: transform .3s ease-in-out;
+    }
+    ul.ks-cboxtags li input[type="checkbox"]:checked+label::before {
+        transform: rotate(-360deg);
+        transition: transform .3s ease-in-out;
+    }
+    ul.ks-cboxtags li input[type="checkbox"]:checked+label {
+        border: 2px solid #1bdbf8;
+        background-color: #12bbd4;
+        color: #fff;
+        transition: all .2s;
+    }
+    ul.ks-cboxtags li input[type="checkbox"] {
+        display: absolute;
+    }
+    ul.ks-cboxtags li input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+    }
+    ul.ks-cboxtags li input[type="checkbox"]:focus+label {
+        border: 2px solid #e9a1ff;
+    }
+    input[type="submit"] {
+        width: 60%;
+        box-shadow: 3px 4px 0px 0px #8a2a21;
+        background: linear-gradient(to bottom, #c62d1f 5%, #f24437 100%);
+        background-color: #c62d1f;
+        border-radius: 18px;
+        border: 1px solid #d02718;
+        position: center;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: Arial;
+        font-size: 17px;
+        padding: 7px 25px;
+        margin-left: 250px;
+        text-decoration: none;
+        text-shadow: 0px 1px 0px #810e05;
+    }
+    input[type="submit"]:hover {
+        background: linear-gradient(to bottom, #f24437 5%, #c62d1f 100%);
+        background-color: #f24437;
+    }
+    input[type="submit"]:active {
+        position: relative;
+        top: 1px;
+    }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container1">
+
+            <img src="static/styles/img/logoproject.png" alt=l ogo class="logo">
+            <nav>
+                <ul>
+                    <li><a href="{{url_for('home')}}">Home</a></li>
+                    <li><a href="{{url_for('about_us')}}">About</a></li>
+                    <li><a href="{{url_for('contact_us')}}">Contact Us</a></li>
+                    <li><a href="{{url_for('account')}}">Account</a></li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
     {% block results %}
-     <!-- This is where the prognosis goes -->
+    <!-- {% set num = {'total':0} %} -->
+    <!-- This is where the prognosis goes -->
+    <h1> Select your symptoms</h1>
     <form action="{{url_for('diagnosis')}}" method="POST">
-    {%for symp in sympList%}
-    <input type="checkbox" name="symps" value={{symp}}>{{symp}}<br>
-    {% endfor %}
-    <input type="submit" value="Classify Symptoms" id="sub">
-    {% endblock results %}
-</form>
+        <div class="container">
+            <ul class="ks-cboxtags">
+                {% set i = [1] %} {%for symp in sympList%}
+                <!-- {{increment(num,'total')}} -->
+                <!-- {%if num.total is divisibleby(5)%} -->
+                <!-- {{"<br>"}} -->
+                <!-- {%endif%} -->
+                <!-- value={{symp}}>{{symp}} -->
+                <li> <input type="checkbox" name="symps" id={{i[0]}} value={{symp}}>
+                    <label for={{i[0]}}>{{symp}} </label> {% if i.append(i.pop() + 1) %}{% endif %}
+                </li>
+
+                <!-- {{num.total}} -->
+                {% endfor %}
+            </ul>
+        </div>
+
+        <input type="submit" value="Classify Symptoms" id="sub"> {% endblock results %}
 
 
-  </body>
+    </form>
+
+
+</body>
+
 </html>
