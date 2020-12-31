@@ -23,16 +23,7 @@ app.config['SECRET_KEY'] = '78sOME098random987key10847'
 # def checkFile():
 #   path = "G:\Shared drives\CS150Project\CSCI150 files\model data"
 
-
-
-
-app = Flask(__name__,static_folder='static/')
-app.config['SECRET_KEY'] = '78sOME098random987key10847'
-# def checkFile():
-#   path = "G:\Shared drives\CS150Project\CSCI150 files\model data"
-
-
-
+# function to retrieve symptom column
 def loadSymps():
   X = pd.read_csv('datasets/training_data.csv')
   symptoms = X.columns
