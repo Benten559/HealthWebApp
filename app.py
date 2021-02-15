@@ -192,7 +192,7 @@ def identify():
   test_sim = test_output[0]
 
   # search/compare
-  path = r"Machine learning model\datasets\CSCI150 files\model data"
+  path = r"C:\xampp\htdocs\mysite\schoolStuff\150proj\Project150\env150\webApp\Team10Repo\Machine learning model\datasets\feats\CSCI150 files\model data"
   resultmain = 0
   maxi= float(0) 
   for i in range (0, 1153):
@@ -203,13 +203,13 @@ def identify():
       maxi = result.item()
       print(maxi)
       resultmain = i
-      
+  
   # CHECK THE FEATURE VECTORS
-  root_dir = r"cropped"
+  root_dir = r"C:\Users\Ben's PC\Desktop\Team10Repo\Machine learning model\datasets\cropped"
 
   k = 0
   dataset = pd.read_csv("templates/table.csv")
-  predicted = "Hello"
+  # predicted = "Hello"
   for filename in glob.iglob(root_dir + '**/*.jpg', recursive=True):
     if(k==resultmain):
       basename = os.path.basename(filename)
